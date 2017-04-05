@@ -14,11 +14,11 @@ public class Database {
                 "jdbc:mysql://localhost:3306/test", "root", "");
     }
 
-    public Database() {
+    public Database() throws Exception {
         this.connect();
     }
 
-    public static Database init() {
+    public static Database init() throws Exception {
         Database db = new Database();
         return db;
     }
@@ -58,7 +58,7 @@ public class Database {
         return result;
     }
 
-    public Database query(String query) {
+    public Database query(String query) throws Exception {
         if( connection==null ) {
             this.connect();
         }
@@ -79,12 +79,8 @@ public class Database {
         return this;
     }
 
-    private Database connect() {
-        try {
-            connection = Database.getMySqlConnection();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    private Database connect() throws Exception{
+        connection = Database.getMySqlConnection();
         return this;
     }
 
