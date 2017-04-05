@@ -7,6 +7,10 @@ public class JSONResponse {
 
     private JSONObject response;
 
+    JSONResponse() {
+        this.response = new JSONObject();
+    }
+
     public static JSONResponse init () {
         return new JSONResponse();
     }

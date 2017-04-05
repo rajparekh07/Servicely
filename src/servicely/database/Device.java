@@ -1,10 +1,12 @@
 package servicely.database;
 
+import servicely.utils.Escaper;
+
 import java.sql.ResultSet;
 
 public class Device extends Model{
 
-    protected static String TABLE_NAME = "device";
+    protected static String TABLE_NAME = "devices";
 
     public int id;
 
@@ -46,9 +48,42 @@ public class Device extends Model{
     public int save() throws Exception {
 
         String query = "INSERT INTO "+TABLE_NAME+ "(name, type) VALUES " +
-                "(" + this.name + "," +
-                this.type + ")";
+                "('" + this.name + "','" +
+                this.type + "')";
         return Database.init().query(query).fireUpdate();
     }
+
+    @Override
+    public String getTableName() throws Exception {
+        return TABLE_NAME;
+    }
+
+
+    public static ResultSet find(int id) throws Exception{
+        String query = "SELECT * FROM " + TABLE_NAME + " WHERE `id` = "+id;
+        return Database.init().query(query).fireSelect();
+    }
+
+    public static ResultSet all() throws Exception {
+        String query = "SELECT * FROM " + TABLE_NAME;
+        return Database.init().query(query).fireSelect();
+    }
+
+    public static ResultSet where(String columnName, String val) throws Exception {
+
+        return where(columnName, "=", val);
+    }
+
+    public static ResultSet where(String columnName,String operator ,String val) throws Exception {
+
+        columnName = Escaper.escapeString(columnName);
+
+        val = Escaper.escapeString(val);
+
+        String query = "SELECT * FROM " + TABLE_NAME  + "WHERE `" + columnName + "` "+ operator +" '" + val + "'";
+        return Database.init().query(query).fireSelect();
+    }
+
+
 
 }

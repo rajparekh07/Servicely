@@ -2,6 +2,7 @@ package servicely;
 
 
 import servicely.database.Database;
+import servicely.database.Device;
 import servicely.database.QueryHelper;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class Startup {
 
         try{
             migrate();
+            seed();
 
         } catch (Exception e) {
             return e.getMessage();
@@ -38,7 +40,7 @@ public class Startup {
         query = QueryHelper.createTable("devices", "(" +
                 "id int UNSIGNED AUTO_INCREMENT PRIMARY KEY," +
                 "name VARCHAR(100) NOT NULL," +
-                "type VARCHAR(100) UNIQUE NOT NULL" +
+                "type VARCHAR(100) NOT NULL" +
                 ")");
         queries.add(query);
 
@@ -95,11 +97,60 @@ public class Startup {
 
     public static boolean seed() throws Exception{
 
-        userSeeder();
-
-
+        deviceSeeder();
 
         return true;
+    }
+
+    private static void deviceSeeder() {
+        Device device = null;
+        List<Device> devices = new ArrayList<>();
+
+        device = new Device("Google Pixel", "Mobile");
+        devices.add(device);
+        device = new Device("Google Pixel XL", "Mobile");
+                devices.add(device);
+
+        device = new Device("Google Nexus 6", "Mobile");
+                devices.add(device);
+
+        device = new Device("Google Nexus 6p", "Mobile");
+                devices.add(device);
+
+        device = new Device("Google Nexus 5x", "Mobile");
+                devices.add(device);
+
+        device = new Device("Google Pixel C", "Mobile");
+                devices.add(device);
+
+        device = new Device("Google Pixel 2", "Mobile");
+                devices.add(device);
+
+        device = new Device("Google Pixel 2017", "Mobile");
+                devices.add(device);
+
+        device = new Device("HP Pavilion", "Laptop");
+                devices.add(device);
+
+        device = new Device("HP Pavilion G6", "Laptop");
+                devices.add(device);
+
+        device = new Device("HP Pavilion G7", "Laptop");
+                devices.add(device);
+
+        device = new Device("HP Pavilion G10", "Laptop");
+                devices.add(device);
+
+        device = new Device("HP Pavilion Spectre", "Laptop");
+        devices.add(device);
+
+        devices.forEach((d) -> {
+            try {
+                d.save();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private static void userSeeder() {

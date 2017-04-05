@@ -180,7 +180,9 @@
 
                             </div>
                             <div class="input-field col l12 center-align">
-                                <button class="btn waves-effect waves-light custom-purple-color white-text" id="register-btn" type="submit" name="action">Register
+                                <button class="btn waves-effect waves-light custom-purple-color white-text" id="register-btn" type="submit" name="action"
+                                    @click.prevent="register"
+                                >Register
                                 </button>
                             </div>
                         </form>
@@ -217,7 +219,7 @@
             confirmPassword : ''
         },
         methods : {
-            login() {
+            register() {
                 if(this.errors.any() || this.confirmPassword !== this.password) return;
                 let data = {
                     email : this.email,
@@ -227,7 +229,8 @@
                 };
                 let url = `/register/register.jsp`;
                 axios.post(url, data)
-                    .catch((response) => {
+                    .then((response) => {
+                    console.log(response);
                         if(response.data.success) {
                             window.successAlert("Success!");
                             setTimeout(function () {

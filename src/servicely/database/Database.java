@@ -31,7 +31,6 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        this.cleanUp();
         return resultSet;
     }
 
@@ -55,6 +54,8 @@ public class Database {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        this.cleanUp();
+
         return result;
     }
 
@@ -62,7 +63,7 @@ public class Database {
         if( connection==null ) {
             this.connect();
         }
-
+        System.out.println(query);
         this.createStatement(query);
 
         return this;

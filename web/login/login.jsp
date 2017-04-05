@@ -1,6 +1,7 @@
 <%@ page import="servicely.utils.Escaper" %>
 <%@ page import="servicely.database.User" %>
 <%@ page import="servicely.responses.JSONResponse" %>
+<%@ page import="servicely.requests.JSONRequest" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -12,16 +13,24 @@
 <%--@TODO Middleware--%>
 
 <%
-    String email = Escaper.escapeString(request.getParameter("email"));
-    String password = Escaper.escapeString(request.getParameter("password"));
+    String jsonResponse = "";
+
+
+    JSONRequest jsonRequest = JSONRequest.init(request);
+    String email = Escaper.escapeString(jsonRequest.getParameter("email"));
+
+    String password = Escaper.escapeString(jsonRequest.getParameter("password"));
+
     if(User.attemptLogin(email, password)) {
         try {
             session.setAttribute("user", User.where("email",email));
-            JSONResponse.init().success().make();
+            jsonResponse = JSONResponse.init().success().make();
         } catch (Exception e) {
-            JSONResponse.init().error(e.getMessage());
+            jsonResponse = JSONResponse.init().error(e.getMessage()).make();
         }
     } else {
-        JSONResponse.init().failed().make();
+        jsonResponse = JSONResponse.init().failed().make();
     }
+    response.setContentType("application/json");
+    response.getWriter().write(jsonResponse);
 %>

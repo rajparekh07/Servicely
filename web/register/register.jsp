@@ -1,6 +1,8 @@
-<%@ page import="servicely.utils.Escaper" %>
 <%@ page import="servicely.database.User" %>
 <%@ page import="servicely.responses.JSONResponse" %>
+<%@ page import="servicely.requests.JSONRequest" %>
+
+<%@ page import="servicely.utils.Escaper" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -12,23 +14,31 @@
 <%--@TODO Middleware--%>
 
 <%
-    String name = Escaper.escapeString(request.getParameter("name"));
-    String email = Escaper.escapeString(request.getParameter("email"));
-    String mobileNumber = Escaper.escapeString(request.getParameter("mobileNumber"));
-    String password = Escaper.escapeString(request.getParameter("password"));
-    User user = new User(name, email, mobileNumber, password);
-    try {
-        if(user.save() > 0) {
-            try {
-                session.setAttribute("user", User.where("email",email));
-                JSONResponse.init().success().make();
-            } catch (Exception e) {
-                JSONResponse.init().error(e.getMessage());
-            }
-        } else {
-            JSONResponse.init().failed().make();
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+    JSONRequest jsonRequest = JSONRequest.init(request);
+
+   String name = Escaper.escapeString(jsonRequest.getParameter("name"));
+   String email = Escaper.escapeString(jsonRequest.getParameter("email"));
+   String mobileNumber = Escaper.escapeString(jsonRequest.getParameter("mobileNumber"));
+   String password = Escaper.escapeString(jsonRequest.getParameter("password"));
+   User user = new User(name, email, mobileNumber, password);
+   String jsonResponse = "";
+   try {
+       if(user.save() > 0) {
+           try {
+               session.setAttribute("user", User.where("email",email));
+               jsonResponse = JSONResponse.init().success().make();
+           } catch (Exception e) {
+               jsonResponse = JSONResponse.init().error(e.getMessage()).make();
+           }
+       } else {
+           jsonResponse = JSONResponse.init().failed().make();
+       }
+   } catch (Exception e) {
+       e.printStackTrace();
+       jsonResponse = JSONResponse.init().error(e.getMessage()).make();
+
+   }
+
+   response.setContentType("application/json");
+   response.getWriter().write(jsonResponse);
 %>
