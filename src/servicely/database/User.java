@@ -50,6 +50,21 @@ public class User extends Model{
         return user;
     }
 
+    public static boolean attemptLogin(String email, String password) {
+        try {
+            ResultSet rs = where("email", email);
+
+            if(rs.next()) {
+                String userPassword = rs.getString("password");
+                return password.equals(userPassword);
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     @Override
     public int save() throws Exception {
 

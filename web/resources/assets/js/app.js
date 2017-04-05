@@ -20,14 +20,17 @@ import vueSlider from './components/vueSlider.vue';
 
 Vue.component('vue-slider', vueSlider);
 
-const app = new Vue({
-    el: '#app',
-    computed : {
-        data () {
-            return window.data
-        }
-    }
-});
+// const app = new Vue({
+//     el: '#app',
+//     data: {
+//
+//     },
+//     computed : {
+//         data () {
+//             return window.data
+//         }
+//     }
+// });
 
 
 

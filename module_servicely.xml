@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_servicely" default="compile.module.servicely">
+  <dirname property="module.servicely.basedir" file="${ant.file.module_servicely}"/>
+  
+  <property name="module.jdk.home.servicely" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.servicely" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.servicely" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.servicely" value="-encoding UTF-8 -source 8 -target 8 ${compiler.args}"/>
+  
+  <property name="servicely.output.dir" value="${module.servicely.basedir}/out/production/servicely"/>
+  <property name="servicely.testoutput.dir" value="${module.servicely.basedir}/out/test/servicely"/>
+  
+  <path id="servicely.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="servicely.module.production.classpath">
+    <path refid="${module.jdk.classpath.servicely}"/>
+    <path refid="library.tomcat_7.0.56.classpath"/>
+    <path refid="library.javax.json.classpath"/>
+    <path refid="library.mysql-connector-java-5.1.41-bin.classpath"/>
+  </path>
+  
+  <path id="servicely.runtime.production.module.classpath">
+    <pathelement location="${servicely.output.dir}"/>
+    <path refid="library.javax.json.classpath"/>
+    <path refid="library.mysql-connector-java-5.1.41-bin.classpath"/>
+  </path>
+  
+  <path id="servicely.module.classpath">
+    <path refid="${module.jdk.classpath.servicely}"/>
+    <pathelement location="${servicely.output.dir}"/>
+    <path refid="library.tomcat_7.0.56.classpath"/>
+    <path refid="library.javax.json.classpath"/>
+    <path refid="library.mysql-connector-java-5.1.41-bin.classpath"/>
+  </path>
+  
+  <path id="servicely.runtime.module.classpath">
+    <pathelement location="${servicely.testoutput.dir}"/>
+    <pathelement location="${servicely.output.dir}"/>
+    <path refid="library.tomcat_7.0.56.classpath"/>
+    <path refid="library.javax.json.classpath"/>
+    <path refid="library.mysql-connector-java-5.1.41-bin.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.servicely">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.servicely">
+    <patternset refid="excluded.from.module.servicely"/>
+  </patternset>
+  
+  <path id="servicely.module.sourcepath">
+    <dirset dir="${module.servicely.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.servicely" depends="compile.module.servicely.production,compile.module.servicely.tests" description="Compile module servicely"/>
+  
+  <target name="compile.module.servicely.production" depends="register.custom.compilers" description="Compile module servicely; production classes">
+    <mkdir dir="${servicely.output.dir}"/>
+    <javac2 destdir="${servicely.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.servicely}/javac">
+      <compilerarg line="${compiler.args.servicely}"/>
+      <bootclasspath refid="servicely.module.bootclasspath"/>
+      <classpath refid="servicely.module.production.classpath"/>
+      <src refid="servicely.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.servicely"/>
+    </javac2>
+    
+    <copy todir="${servicely.output.dir}">
+      <fileset dir="${module.servicely.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.servicely.tests" depends="register.custom.compilers,compile.module.servicely.production" description="compile module servicely; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.servicely" description="cleanup module">
+    <delete dir="${servicely.output.dir}"/>
+    <delete dir="${servicely.testoutput.dir}"/>
+  </target>
+</project>

@@ -7,6 +7,11 @@
         <element id="directory" name="classes">
           <element id="module-output" name="servicely" />
         </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="mysql-connector-java-5.1.41-bin" />
+          <element id="library" level="project" name="javax.json" />
+          <element id="library" level="project" name="json-simple-1.1" />
+        </element>
       </element>
     </root>
   </artifact>

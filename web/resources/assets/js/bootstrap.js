@@ -3,21 +3,25 @@ import Vue from 'vue';
 import VueRouter from 'vue-router';
 import Axios from 'axios';
 import notie from 'notie'
+import VeeValidate from 'vee-validate';
 
 global.$ = global.jQuery = jQuery;
-
 window.Vue = Vue;
+
 Vue.use(VueRouter);
+Vue.use(VeeValidate);
 
 window.axios = Axios;
 
-console.log(notie);
-
 window.notie = notie;
 
-window.successAlert = function () {
-    window.notie.alert({ text : "Success!", type : 1, time : 3 });
+window.successAlert = function (msg) {
+    window.notie.alert({ text : msg, type : 1, time : 3 });
 };
+window.failedAlert = function (msg) {
+    window.notie.alert({ text : msg, type : 3, time : 3 });
+};
+
 
 window.axios.defaults.headers.common = {
     'X-Requested-With': 'XMLHttpRequest'
