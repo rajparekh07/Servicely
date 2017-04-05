@@ -93,5 +93,24 @@ public class Startup {
         return true;
     }
 
+    public static boolean seed() throws Exception{
+
+        userSeeder();
+
+
+
+        return true;
+    }
+
+    private static void userSeeder() {
+
+        List<String> queries = new ArrayList<>();
+
+        String query;
+
+        query = "";
+
+    }
+
 
 }

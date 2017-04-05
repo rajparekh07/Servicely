@@ -2,5 +2,11 @@
 
 <%
     String initResults = Startup.start();
-    out.println(initResults.equals("true")?"Init Successful":initResults);
+    if(initResults.equals("true")){
+        out.println("Init Successful");
+        response.sendRedirect("/");
+    } else {
+        out.print(initResults);
+    }
+
 %>

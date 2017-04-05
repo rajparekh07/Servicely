@@ -41,7 +41,7 @@ nav ul a {
 
 
 .grey-background {
-    background-color: #F1F1F1;
+    background-color: #F9F9F9;
 }
 
 .grey-text-color {
@@ -181,4 +181,39 @@ nav ul a {
     95% {
         transform: translateX(0rem) scale(1);
     }
+}
+
+.banner-text {
+    color: rgb(76, 16, 193);
+    font-family: "GothamRounded-Light", "Arial", sans-serif;
+    font-size: 57px;
+    line-height: 1.2;
+    text-transform: capitalize;
+}
+
+.custom-purple-color {
+    background-color: rgb(76, 16, 193) !important;
+    -webkit-transition: all 0.5s ease;
+    -moz-transition: all 0.5s ease;
+    -ms-transition: all 0.5s ease;
+    -o-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+.custom-purple-color:hover {
+    background-color: #f9f9f9
+}
+
+.skew-it-rev {
+    -webkit-transform: skewY(-4deg);
+    -moz-transform: skewY(-4deg);
+    -ms-transform: skewY(-4deg);
+    -o-transform: skewY(-4deg);
+    transform: skewY(-4deg);
+}
+.skew-it {
+    -webkit-transform: skewY(4deg);
+    -moz-transform: skewY(4deg);
+    -ms-transform: skewY(4deg);
+    -o-transform: skewY(4deg);
+    transform: skewY(4deg);
 }
