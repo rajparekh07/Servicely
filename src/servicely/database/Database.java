@@ -23,37 +23,27 @@ public class Database {
         return db;
     }
 
-    public ResultSet fireSelect() {
-
+    public ResultSet fireSelect() throws SQLException {
         ResultSet resultSet = null;
-        try {
-            resultSet = this.statement.executeQuery();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        resultSet = this.statement.executeQuery();
         return resultSet;
     }
 
-    private void cleanUp() {
-        try {
-            if (this.statement != null) {
-                this.statement.close();
-            }
-            if (this.connection != null) {
-                this.connection.close();
-            }
-        } catch (Exception e) {
-            System.out.println(e);
+    private void cleanUp() throws SQLException {
+
+        if (this.statement != null) {
+            this.statement.close();
+        }
+        if (this.connection != null) {
+            this.connection.close();
         }
     }
 
-    public int fireUpdate() {
+    public int fireUpdate() throws SQLException {
         int result = 0;
-        try {
-            result = this.statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+
+        result = this.statement.executeUpdate();
+
         this.cleanUp();
 
         return result;

@@ -1,5 +1,5 @@
 <nav>
-    <div class="nav-wrapper grey-background">
+    <div class="nav-wrapper grey-background" style="z-index: 3">
         <div class="container">
             <a href="/" class="brand-logo grey-text-color">
                 <div class="logo">

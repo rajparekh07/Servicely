@@ -7,32 +7,23 @@
 <%@ page import="java.sql.SQLException" %>
 
 <%
-    JSONRequest jsonRequest = JSONRequest.init(request);
 
     String query = request.getParameter("query");
-    out.print(query);
 //    String query = Escaper.escapeString(jsonRequest.getParameter("query"));
     ResultSet devices = null;
 
-    if( !query.isEmpty() ) {
-
-        try {
-            devices = Device.where("name","LIKE","%"+query+"%");
-            
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    } else {
-        try {
-            devices = Device.all();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+   try {
+       if( query != null ) {
+           devices = Device.where("name","LIKE","%"+query+"%");
+       } else {
+           devices = Device.all();
+       }
+   } catch (Exception e) {
+       e.printStackTrace();
+   }
     JSONArray array = new JSONArray();
-        try {
-            while (devices.next()) {
+    try {
+        while (devices.next()) {
             JSONObject jsonObject = new JSONObject();
 
             jsonObject.put("id", devices.getInt("id"));
@@ -41,11 +32,12 @@
 
             array.add(jsonObject);
         }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
     response.setContentType("application/json");
     response.getWriter().write(array.toJSONString());
+
 
 
 %>

@@ -72,7 +72,7 @@ public class Service extends Model{
 
         val = Escaper.escapeString(val);
 
-        String query = "SELECT * FROM " + TABLE_NAME  + "WHERE `" + columnName + "` = '" + val + "'";
+        String query = "SELECT * FROM " + TABLE_NAME  + " WHERE `" + columnName + "` = '" + val + "'";
         return Database.init().query(query).fireSelect();
     }
 

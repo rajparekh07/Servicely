@@ -234,10 +234,10 @@
                         if(response.data.success) {
                             window.successAlert("Success!");
                             setTimeout(function () {
-                                window.location.href = '/devices';
+                                window.location.href = '/catalog';
                             },300);
                         } else {
-                            window.failedAlert("Failed!");
+                            window.failedAlert(response.data.error);
                         }
                     }).catch(() => {
                     window.failedAlert("Failed!");

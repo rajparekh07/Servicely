@@ -80,7 +80,7 @@ public class Device extends Model{
 
         val = Escaper.escapeString(val);
 
-        String query = "SELECT * FROM " + TABLE_NAME  + "WHERE `" + columnName + "` "+ operator +" '" + val + "'";
+        String query = "SELECT * FROM " + TABLE_NAME  + " WHERE `" + columnName + "` "+ operator +" '" + val + "'";
         return Database.init().query(query).fireSelect();
     }
 

@@ -127,7 +127,57 @@
 <div id="app">
     <br>
     <div class="row grey-background">
-        <div class="container">
+        <div class="col l2">
+            <ul id="slide-out" class="side-nav fixed" style="z-index: 2">
+                <li class="center-align grey-background" style="padding-bottom: 20px">
+                    <img src="/public/images/logo.png" alt="">
+                </li>
+                <li>
+                    <div class="card z-depth-1-half grey-background">
+                        <div class="card-content">
+                            <div class="card-title center-align roboto-thin">
+                                Filters
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="card">
+                        <div class="center-align">
+                            Search Device
+                        </div>
+                        <div class="card-content">
+                            <input type="text"
+                                   placeholder="Search"
+                                   style="display: block;font-size: 16px;font-weight: 300;width: 100%;height: 45px;margin: 0;border: 0;"
+                                   v-model="textFilter"
+                            >
+
+                        </div>
+                    </div>
+                </li>
+                <li>
+                    <div class="center-align">
+                        Sort Devices
+                    </div>
+                    <div class="input-field col s12">
+                        <p >
+                            <input name="selectTypeSort" type="radio" id="asc" v-model="selectTypeSort" value="0"/>
+                            <label for="asc" >Ascending Sort</label>
+                        </p>
+                        <p>
+                            <input name="selectTypeSort" type="radio" id="desc" v-model="selectTypeSort" value="1"/>
+                            <label for="desc" >Descending Sort</label>
+                        </p>
+
+                    </div>
+                </li>
+                <li class="bold"><a @click="clearFilter" class="waves-effect waves-teal">Clear Filters</a></li>
+            </ul>
+            <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+
+        </div>
+        <div class="col l10">
             <div class="row">
                 <div class="col l2">
                     <div class="banner-text roboto-thin" style="font-size: 2em">All Devices</div>
@@ -135,44 +185,25 @@
             </div>
             <hr>
             <div class="row">
-                <%
-                    ResultSet rs = null;
+                    <div class="progress"  v-if="isLoading">
+                        <div class="indeterminate"></div>
+                    </div>
 
-                    try {
-                        rs = Device.all();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-
-
-                    while(rs.next()){
-                %>
-
-
-                    <div class="col l4">
+                    <div class="col l4" v-for="(device,index) in filteredDevices" v-else>
                         <div class="card">
                             <div class="card-image">
                                 <img src="/public/images/pixel.png">
-                                <span class="card-title black-text"><%=rs.getString("type")%></span>
+                                <span class="card-title black-text">{{ device.type }}</span>
                             </div>
                             <div class="card-content">
-                                <p><%=rs.getString("name")%></p>
+                                <p>{{ device.name }}</p>
                             </div>
                             <div class="card-action">
-                                <a href="/device/?id=<%=rs.getInt("id")%>">Visit Device Page</a>
+                                <a @click="redirectToDevice(device.id)">Visit Device Page</a>
                             </div>
                         </div>
 
                     </div>
-                <%
-                        try {
-                        } catch (Exception e) {
-                        }
-                        try {
-                        } catch (Exception e) {
-                        }
-                    } %>
             </div>
 
         </div>
@@ -192,8 +223,88 @@
                 p.opacity = 1;
                 (function fade(){(p.opacity-=.1)<0?p.display="none":setTimeout(fade, 25)})();
             },500);
+
+
+            // Initialize collapse button
+            $(".button-collapse").sideNav();
+            // Initialize collapsible (uncomment the line below if you use the dropdown variation)
+            $('.collapsible').collapsible();
+            $('select').material_select();
         });
 
+    });
+
+    const app = new Vue({
+        el : '#app',
+        data : {
+           devices : [],
+            isLoading : true,
+            textFilter : "",
+            selectTypeSort : 0,
+            filteredDevices : [],
+       },
+       computed : {
+            deviceType () {
+                return this.devices.map((device) => device.type).filter((type, index, types) => types.indexOf(type) === index);
+            },
+       },
+       watch : {
+           textFilter() {
+               this.filterAndSort();
+           },
+           selectTypeSort() {
+               this.filterAndSort();
+           }
+       },
+       mounted() {
+           this.fetchDevices();
+       },
+       methods : {
+           fetchDevices() {
+               let url = `/catalog/search.jsp`;
+               axios.get(url)
+                   .then( (response) => {
+                       this.devices = response.data;
+                       this.filteredDevices = response.data;
+                       this.isLoading = false;
+                   })
+                   .catch( (data) => {
+                       window.failedAlert("Failed to fetch devices");
+                   });
+           },
+           redirectToDevice(id) {
+               window.location.href = '/device/?id=' + id;
+           },
+            clearFilter(){
+               this.isLoading = true;
+               this.filteredDevices = this.devices;
+                    this.textFilter = "";
+                    this.selectTypeSort = 0;
+                setTimeout(() => {
+                    this.isLoading = false;
+                },200);
+           },
+           filterAndSort() {
+                this.isLoading = true;
+               this.filteredDevices = this.devices.filter( (device) => {
+                   let condition = true;
+                   if(!this.textFilter == ""){
+                       let text = this.textFilter.toLowerCase();
+                       condition = device.name.toLowerCase().indexOf(text) > -1 || device.type.toLowerCase().indexOf(text) > -1;
+                   }
+                   return condition;
+               }).sort((a,b) => {
+                   let test = this.selectTypeSort == "1" ? 1 : -1;
+                   console.log(test);
+                   if(a.name < b.name) return test;
+                   if(a.name > b.name) return -1*test;
+                   return 0;
+               });
+               setTimeout(() => {
+                   this.isLoading = false;
+               },200);
+           }
+       }
     });
 </script>
 </body>
