@@ -1,3 +1,4 @@
+<%@include file="/middlewares/loggedInMiddleWare.jsp"%>
 <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -202,7 +203,7 @@
                };
                let url = `/login/login.jsp`;
                axios.post(url, data)
-                   .catch((response) => {
+                   .then((response) => {
                         if(response.data.success) {
                             window.successAlert("Success!");
                             setTimeout(function () {

@@ -55,9 +55,9 @@ public class DeviceService extends Model {
     public int save() throws Exception {
 
         String query = "INSERT INTO "+TABLE_NAME+ "(cost, device_id, service_id) VALUES " +
-                "(" + this.cost + "," +
-                this.device_id + "," +
-                this.service_id + ")";
+                "('" + this.cost + "','" +
+                this.device_id + "','" +
+                this.service_id + "')";
         return Database.init().query(query).fireUpdate();
     }
 

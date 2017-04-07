@@ -199,8 +199,8 @@ nav ul a {
     -o-transition: all 0.5s ease;
     transition: all 0.5s ease;
 }
-.custom-purple-color:hover {
-    background-color: #f9f9f9
+.notie-textbox {
+    z-index: 10 !important;
 }
 
 .skew-it-rev {

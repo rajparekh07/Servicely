@@ -20,16 +20,15 @@
     String email = Escaper.escapeString(jsonRequest.getParameter("email"));
 
     String password = Escaper.escapeString(jsonRequest.getParameter("password"));
-
-    if(User.attemptLogin(email, password)) {
-        try {
-            session.setAttribute("user", User.where("email",email));
+    try {
+        if(User.attemptLogin(email, password)) {
+            session.setAttribute("user", (User.where("email",email)));
             jsonResponse = JSONResponse.init().success().make();
-        } catch (Exception e) {
-            jsonResponse = JSONResponse.init().error(e.getMessage()).make();
+        } else {
+          jsonResponse = JSONResponse.init().failed().make();
         }
-    } else {
-        jsonResponse = JSONResponse.init().failed().make();
+    } catch (Exception e) {
+        jsonResponse = JSONResponse.init().error(e.getMessage()).make();
     }
     response.setContentType("application/json");
     response.getWriter().write(jsonResponse);

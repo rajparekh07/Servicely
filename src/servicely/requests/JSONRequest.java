@@ -7,9 +7,6 @@ import org.json.simple.parser.ParseException;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
-/**
- * Created by Administrator on 06-Apr-17.
- */
 public class JSONRequest {
     private HttpServletRequest request;
 
@@ -19,6 +16,7 @@ public class JSONRequest {
         this.request = request;
         try {
             jsonRequest = (JSONObject) new JSONParser().parse(request.getReader());
+            System.out.println(jsonRequest.toJSONString());
         } catch (IOException | ParseException e) {
             e.printStackTrace();
         }
@@ -29,6 +27,8 @@ public class JSONRequest {
     }
 
     public String getParameter(String key) {
-        return (String) jsonRequest.get(key);
+        return (String) getObjectParameter(key);
     }
-}
+
+    public Object getObjectParameter(String key){ return jsonRequest.get(key);}
+ }

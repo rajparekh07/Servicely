@@ -25,7 +25,7 @@
    try {
        if(user.save() > 0) {
            try {
-               session.setAttribute("user", User.where("email",email));
+               session.setAttribute("user", (User.where("email",email)));
                jsonResponse = JSONResponse.init().success().make();
            } catch (Exception e) {
                jsonResponse = JSONResponse.init().error(e.getMessage()).make();

@@ -1,3 +1,4 @@
+<%@include file="/middlewares/loggedInMiddleWare.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>

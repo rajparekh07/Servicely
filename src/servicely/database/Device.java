@@ -3,6 +3,7 @@ package servicely.database;
 import servicely.utils.Escaper;
 
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class Device extends Model{
 
@@ -16,6 +17,13 @@ public class Device extends Model{
 
     public Device() {
 
+    }
+
+    public Device(ResultSet rs) throws SQLException {
+        rs.first();
+        this.id = rs.getInt("id");
+        this.name = rs.getString("name");
+        this.type = rs.getString("type");
     }
 
     public Device(String name, String type) {
@@ -35,9 +43,7 @@ public class Device extends Model{
     public static Device findDevice(int id) {
         Device user = null;
         try {
-            ResultSet rs = find(id);
-            rs.first();
-            user = new Device(rs.getInt("id"), rs.getString("name"),rs.getString("type"));
+            user = new Device(find(id));
         } catch (Exception e) {
             e.printStackTrace();
         }

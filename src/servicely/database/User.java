@@ -40,6 +40,14 @@ public class User extends Model{
         this.password = password;
     }
 
+    public User(ResultSet rs) throws Exception{
+        rs.first();
+        this.id = rs.getInt("id");
+        this.name = rs.getString("name");
+        this.email = rs.getString("email");
+        this.mobileNumber = rs.getString("mobile_number");
+        this.password = rs.getString("password");
+    }
     public static User findUser(int id) {
         User user = null;
         try {
@@ -52,15 +60,11 @@ public class User extends Model{
         return user;
     }
 
-    public static boolean attemptLogin(String email, String password) {
+    public static boolean attemptLogin(String email, String password) throws Exception{
         try {
-            ResultSet rs = where("email", email);
-
-            if(rs.next()) {
-                String userPassword = rs.getString("password");
-                return password.equals(userPassword);
-            }
-            return false;
+            User user = where("email", email);
+            String userPassword = user.password;
+            return password.equals(userPassword);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -95,14 +99,14 @@ public class User extends Model{
         return Database.init().query(query).fireSelect();
     }
 
-    public static ResultSet where(String columnName, String val) throws Exception {
+    public static User where(String columnName, String val) throws Exception {
 
         columnName = Escaper.escapeString(columnName);
 
         val = Escaper.escapeString(val);
 
         String query = "SELECT * FROM " + TABLE_NAME  + " WHERE `" + columnName + "` = '" + val + "'";
-        return Database.init().query(query).fireSelect();
+        return new User(Database.init().query(query).fireSelect());
     }
 
 

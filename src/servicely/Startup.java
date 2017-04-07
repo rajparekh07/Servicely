@@ -1,10 +1,9 @@
 package servicely;
 
 
-import servicely.database.Database;
-import servicely.database.Device;
-import servicely.database.QueryHelper;
+import servicely.database.*;
 
+import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +14,7 @@ public class Startup {
         try{
             migrate();
             seed();
+            System.out.println("Init Successful 1 ");
 
         } catch (Exception e) {
             return e.getMessage();
@@ -26,8 +26,9 @@ public class Startup {
         String query;
 
         List<String> queries = new ArrayList<>();
+        System.out.println("Init Successful 2");
 
-         query = QueryHelper.createTable("users", "(" +
+        query = QueryHelper.createTable("users", "(" +
                 "id int UNSIGNED AUTO_INCREMENT PRIMARY KEY," +
                 "name VARCHAR(100) NOT NULL," +
                 "email VARCHAR(100) UNIQUE NOT NULL," +
@@ -99,7 +100,56 @@ public class Startup {
 
         deviceSeeder();
 
+        serviceSeeder();
+
+        deviceServiceSeeder();
+
+        System.out.println("Init Successful 3");
+
         return true;
+    }
+
+    private static void deviceServiceSeeder() throws Exception {
+        ResultSet devices = Device.all();
+        devices.beforeFirst();
+        while( devices.next() ) {
+            ResultSet services = Service.all();
+
+            services.beforeFirst();
+            while( services.next() ) {
+
+                DeviceService ds = new DeviceService(500, devices.getInt("id"), services.getInt("id"));
+                ds.save();
+            }
+        }
+    }
+
+    private static void serviceSeeder() {
+        Service service = null;
+
+        List<Service> services = new ArrayList<>();
+
+        service = new Service("Battery Replace");
+        System.out.println("Service Created");
+        services.add(service);
+        service = new Service("Screen Replace");
+        services.add(service);
+        service = new Service("Body Replace");
+        services.add(service);
+        service = new Service("Speaker Replace");
+        services.add(service);
+        service = new Service("Accessory Replace");
+        services.add(service);
+        service = new Service("Software Update");
+        services.add(service);
+
+        services.forEach((d) -> {
+            try {
+                d.save();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     private static void deviceSeeder() {

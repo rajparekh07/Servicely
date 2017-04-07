@@ -1,5 +1,6 @@
 <%@ page import="java.sql.ResultSet" %>
 <%@ page import="servicely.database.Device" %>
+<%@include file="/middlewares/notLoggedInMiddleWare.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -16,6 +17,7 @@
     <link href="/public/css/all.css" rel="stylesheet">
 
     <style>
+
         canvas {
             position:fixed;
             top:0;
@@ -128,7 +130,7 @@
     <br>
     <div class="row grey-background">
         <div class="col l2">
-            <ul id="slide-out" class="side-nav fixed" style="z-index: 2">
+            <ul id="slide-out" class="side-nav fixed" style="z-index: 1">
                 <li class="center-align grey-background" style="padding-bottom: 20px">
                     <img src="/public/images/logo.png" alt="">
                 </li>
@@ -190,7 +192,8 @@
                     </div>
 
                     <div class="col l4" v-for="(device,index) in filteredDevices" v-else>
-                        <div class="card">
+                        <div class="card hoverable">
+                            <span class="new badge custom-purple-color"></span>
                             <div class="card-image">
                                 <img src="/public/images/pixel.png">
                                 <span class="card-title black-text">{{ device.type }}</span>
@@ -198,8 +201,10 @@
                             <div class="card-content">
                                 <p>{{ device.name }}</p>
                             </div>
-                            <div class="card-action">
-                                <a @click="redirectToDevice(device.id)">Visit Device Page</a>
+                            <div class="card-action custom-purple-color"
+                                 @click="redirectToDevice(device.id)">
+                                <a class="white-text"
+                                >Visit Device Page</a>
                             </div>
                         </div>
 

@@ -3,8 +3,7 @@
 <%
     String initResults = Startup.start();
     if(initResults.equals("true")){
-        out.println("Init Successful");
-        response.sendRedirect("/");
+        System.out.println("Init Successful");
     } else {
         out.print(initResults);
     }

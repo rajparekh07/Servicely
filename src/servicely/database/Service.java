@@ -5,7 +5,7 @@ import servicely.utils.Escaper;
 import java.sql.ResultSet;
 
 public class Service extends Model{
-    protected static String TABLE_NAME = "device";
+    protected static String TABLE_NAME = "services";
 
     public int id;
 
@@ -46,7 +46,7 @@ public class Service extends Model{
     public int save() throws Exception {
 
         String query = "INSERT INTO "+TABLE_NAME+ "(name) VALUES " +
-                "(" + this.name + ")";
+                "('" + this.name + "')";
         return Database.init().query(query).fireUpdate();
     }
 
