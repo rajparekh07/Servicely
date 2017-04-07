@@ -1,1 +1,11 @@
-# Created by .ignore support plugin (hsz.mobi)
+.gitignore
+web/node_modules/console-control-strings/README.md~
+web/node_modules/editorconfig/tests/
+web/node_modules/in-publish/README.md~
+web/node_modules/node-notifier/vendor/notifu/
+web/node_modules/node-notifier/vendor/toaster/
+web/node_modules/normalize-package-data/test/normalize.js~
+web/node_modules/querystring/.History.md.un~
+web/node_modules/querystring/.Readme.md.un~
+web/node_modules/querystring/.package.json.un~
+web/node_modules/querystring/test/.index.js.un~
