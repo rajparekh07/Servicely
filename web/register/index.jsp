@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>Servicely</title>
 
     <!-- Styles -->
     <link href="../public/css/all.css" rel="stylesheet">

@@ -9,7 +9,7 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>Cart</title>
+    <title>Checkout</title>
 
     <!-- Styles -->
     <link href="/public/css/all.css" rel="stylesheet">
@@ -136,8 +136,14 @@
         <div class="row">
             <div class="col l12">
                 <br>
-                <div class="banner-text " style="font-size: 1.5em">My Cart</div>
+                <h4 class="center-align">Thank You For Placing Order On Servicely!</h4>
                 <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col l12">
+                <br>
+                <div class="banner-text " style="font-size: 1.5em">My Invoice</div>
             </div>
         </div>
         <div v-if="cart.length > 0">
@@ -149,7 +155,6 @@
                         <th>Device Name</th>
                         <th>Service Name</th>
                         <th>Price</th>
-                        <th>Action</th>
                     </tr>
                     </thead>
 
@@ -158,7 +163,6 @@
                         <td>{{ item.device_name }}</td>
                         <td>{{ item.service_name }}</td>
                         <td>$ {{ item.cost }}</td>
-                        <td><div class="btn waves-effect waves-light red" @click="deleteFromCart(item.device_service_id)">Delete</div></td>
                     </tr>
                     </tbody>
                 </table>
@@ -172,13 +176,13 @@
                         </h3>
                     </div>
                     <div class="right-align">
-                        <div class="btn waves-effect waves-light custom-purple-color" @click="checkout">Checkout!</div>
+                        <div class="btn waves-effect waves-light custom-purple-color" @click="printInvoice">Print!</div>
                     </div>
                 </div>
             </div>
         </div>
         <div v-else>
-            <div class="center-align banner-text" style="min-height: 100vh; font-size: 3em">Sorry, No Items In Cart Yet! :(</div>
+            <div class="center-align banner-text" style="min-height: 100vh; font-size: 3em">Sorry, No Items Up for checkout Yet! :(</div>
         </div>
     </div>
 </div>
@@ -217,30 +221,12 @@
                     .then( (response) => {
                         this.cart = response.data;
                     }).catch ( () => {
-                        window.failedAlert("Failed");
+                    window.failedAlert("Failed");
                 })
             },
-            deleteFromCart (id) {
-                let url = '/cart/delete.jsp';
-                let data = {
-                    device_services : id
-                };
-                axios.post(url, data)
-                    .then( (response) => {
-                        if (response.data.success) {
-                            window.successAlert(1 + " Service Delete From The Cart!");
-                            this.fetchCurrentCart();
-                        } else {
-                            window.failedAlert(response.data.error);
-                        }
-                    }).catch( () => {
-                    window.failedAlert("Failed!");
-                });
-            },
-            checkout() {
-                window.location.href = "/checkout";
+            printInvoice() {
+                window.print();
             }
-
         },
         computed: {
             sum () {

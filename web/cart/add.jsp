@@ -7,9 +7,10 @@
 <%@ page import="servicely.database.Device" %>
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
-<%@ page import="org.json.simple.JSONArray" %>
+
 <%@ page import="java.util.HashSet" %>
 <%@ page import="java.util.Set" %>
+<%@ page import="org.json.simple.JSONArray" %>
 
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
@@ -26,6 +27,7 @@
         Set hs = new HashSet();
 
         deviceServiceList = (List) session.getAttribute("deviceServiceList");
+        if(deviceServiceList==null) deviceServiceList = new ArrayList();
         for(Object dsId : dsIds) {
             DeviceService ds = DeviceService.findDeviceService(((Long)dsId).intValue());
 
