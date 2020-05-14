@@ -1,3 +1,2 @@
-6th Semester Diploma Project. Subject : E-Commerce
-Developers : Yash Panchal, Nishi Pancholi, Raj Parekh, Mayank Parvatia.
+An Ecommerce prototype platform for providing various services. 
 Languages : JSP, Java, JavaScript, HTML5, CSS, MariaDb, VueJs.
